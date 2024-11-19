@@ -13,7 +13,7 @@ typedef enum { // enum para definir o modo de jogo
 typedef struct Jogador {
     char name[50];
     int pontos;
-    short lvlAtual;
+    int lvlAtual;
     modo_t modo;
 } jogador_t;
 
@@ -24,6 +24,12 @@ void displayMenu(jogador_t *jogador, bool *estado);
 
 
 bool continuarJogo(bool *estado, jogador_t *jogador);
+
+
+void mostrarEstatisticas(jogador_t *jogador);
+
+void atualizarEstatisticas(jogador_t *jogador);
+
 
 
 #endif //MENU_H

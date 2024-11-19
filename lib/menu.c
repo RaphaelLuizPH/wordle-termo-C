@@ -101,5 +101,50 @@ bool continuarJogo(bool *estado, jogador_t *jogador) {
     if(c == 'M' || c == 'm') {
         system("cls");
         displayMenu(jogador, estado);
+        return true;
     }
+    system("cls");
+    return true;
+}
+
+
+
+void mostrarEstatisticas(jogador_t *jogador){
+    FILE *arq1;
+    char texto[256];
+
+    arq1 = fopen("estatisticas.dat", "rb");
+
+    if (arq1 == NULL){
+        printf("Erro na abertura do arquivo");
+        return;
+    }
+
+    fseek(arq1, 0, SEEK_SET);  // Move para o in�cio do arquivo antes de ler
+    size_t bytesLidos = fread(texto, sizeof(char), sizeof(texto) - 1, arq1);
+    if (bytesLidos > 0) {
+        texto[bytesLidos] = '\0'; // Garantir que o texto esteja sempre null-terminated
+        printf("%s", texto);
+    }
+
+
+    fclose(arq1);
+
+}
+
+void atualizarEstatisticas(jogador_t *jogador){
+    FILE *arq1;
+    char texto[256];
+
+    arq1 = fopen("estatisticas.dat", "wb"); //Abrir o arquivo estatisticas e escrever em binário
+    if (arq1 == NULL){
+        printf("Erro na abertura do arquivo");
+        return;
+    }
+    sprintf(texto, "\n--- Estatísticas do Jogo ---\nJogador: %s\nPontos %d\nLevel record: %hd\n\n",
+            jogador->name, jogador->pontos, jogador->lvlAtual);
+
+    fwrite(texto, sizeof(char), strlen(texto), arq1);
+
+    fclose(arq1);
 }

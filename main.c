@@ -45,7 +45,7 @@ const int MAX_PALAVRAS = 301; // Definição de uma constante para o número má
             int contadorPalavra = 0; // Contador para o número de palavras lidas do arquivo
             FILE *arqPalavras;
 
-            if(jogador->pontos > (jogador->lvlAtual+1) * 20 && jogador->modo == LINEAR) {
+            if(jogador->pontos > (jogador->lvlAtual+1) * 20 && jogador->modo == LINEAR && jogador->lvlAtual < 5) {
                 jogador->lvlAtual++;
             }
 
@@ -168,7 +168,8 @@ const int MAX_PALAVRAS = 301; // Definição de uma constante para o número má
                 break;
 
                 case 4:
-                    arqPalavras = fopen("../palavras4.txt", "r"); // Abrindo o arquivo de palavras
+
+                arqPalavras = fopen("../palavras4.txt", "r"); // Abrindo o arquivo de palavras
 
                 // Se as palavras não forem carregadas
                 if (arqPalavras == NULL) {
@@ -177,7 +178,7 @@ const int MAX_PALAVRAS = 301; // Definição de uma constante para o número má
 
                 }
 
-                arqPalavras = fopen("../palavras4.txt", "r"); //Reabre o arquivo, caso tenha sido gerado, para leitura após o backup
+
 
                 // Loops para ler o arquivo e colocar as palavras em uma lista
                 while(fscanf(arqPalavras, "%s", palavra) != EOF) {
@@ -196,11 +197,19 @@ const int MAX_PALAVRAS = 301; // Definição de uma constante para o número má
                 break;
 
                 case 5:
-
-                Mostracreditos();
+                jogador->lvlAtual = 0;
                 printf("PARABÉNS! VOCÊ CHEGOU AO FIM DO JOGO!");
-                continuarJogo(&estadoJogo, jogador);
-                break;
+                    Mostracreditos();
+
+                    continuarJogo(state, jogador);
+
+
+
+                    break;
+
+
+
+
             }
 
 

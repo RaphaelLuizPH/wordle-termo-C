@@ -11,6 +11,7 @@
 #include <stdbool.h>
 #include <locale.h>
 #include <windows.h>
+///
 #include "backupPalavras.h"
 #include "processarTentativa.h"
 #include "cores.h"
