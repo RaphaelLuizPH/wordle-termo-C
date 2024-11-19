@@ -311,3 +311,14 @@ const int MAX_PALAVRAS = 301; // Definição de uma constante para o número má
 
 }
 
+/*
+Agradecimentos:
+- Erica Jaislane Campos Fernandes: Ajudou na implementação da lógica de verificação das palavras.
+- Gabriel Rodrigues Alves: Contribuiu com melhorias na estrutura e desempenho do código.
+- Lucas Ataide Martins: Auxiliou na revisão do código e no desenvolvimento de funções auxiliares.
+- Nicole Reinaldo de Carvalho: Responsável pelos testes de funcionalidade e correção de erros.
+- Raphael Luiz de Sousa: Criou a ideia inicial e a estrutura geral do jogo.
+
+Agradecemos a colaboração de todos os envolvidos no projeto!
+*/
+
