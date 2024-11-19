@@ -14,4 +14,6 @@ add_executable(Wordle main.c
         lib/menu.c
         lib/menu.h
         lib/lib.h
+        lib/creditos.c
+        lib/creditos.h
 )

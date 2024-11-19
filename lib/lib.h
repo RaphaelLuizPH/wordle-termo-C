@@ -15,7 +15,7 @@
 #include "processarTentativa.h"
 #include "cores.h"
 #include "menu.h"
-
+#include "creditos.h"
 
 
 

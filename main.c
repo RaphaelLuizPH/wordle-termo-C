@@ -195,8 +195,12 @@ const int MAX_PALAVRAS = 301; // Definição de uma constante para o número má
                 fclose(arqPalavras); // Fecha o arquivo de palavras após o processamento
                 break;
 
+                case 5:
 
-
+                Mostracreditos();
+                printf("PARABÉNS! VOCÊ CHEGOU AO FIM DO JOGO!");
+                continuarJogo(&estadoJogo, jogador);
+                break;
             }
 
 
@@ -223,7 +227,7 @@ const int MAX_PALAVRAS = 301; // Definição de uma constante para o número má
             while(NumeroTentativas < 6 && !acertou_palavras) {
                 fflush(stdin); // Limpa o buffer de entrada
                 printf("\n\n");
-
+                printf("%s", resposta);
                 printf("Digite uma palavra com %d letras: \n", jogador->lvlAtual + 4);
                 fgets(tentativa, 10 + jogador->lvlAtual, stdin);
                 tentativa[strcspn(tentativa, "\n")] = 0;
@@ -253,7 +257,9 @@ const int MAX_PALAVRAS = 301; // Definição de uma constante para o número má
                 colorir(COR_VERDE);
                 printf("%d\n", jogador->pontos); // Exibe a pontuação total
                 colorir(COR_ROSA);
-                printf("Próxima fase em: %d pontos", ((jogador->lvlAtual+1) * 20) - jogador->pontos);
+                int xp = ((jogador->lvlAtual+1) * 20) - jogador->pontos;
+                xp < 0 ? printf("PASSOU DE FASE!") : printf("Próxima fase em: %d pontos", (xp < 0 ? 0 : xp));
+
                 colorir(COR_BRANCO);
 
               // Caso o jogador não acertar
@@ -305,7 +311,11 @@ const int MAX_PALAVRAS = 301; // Definição de uma constante para o número má
 
 
 
+    Mostracreditos();
 
+    colorir(COR_VERMELHO);
+    printf("Saindo...");
+    Sleep(3000);
 
     return 0; //o retorno 0 serve para indicar que o programa terminou sem erros
 
