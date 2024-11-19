@@ -259,7 +259,7 @@ const int MAX_PALAVRAS = 301; // Definição de uma constante para o número má
                 colorir(COR_ROSA);
                 int xp = ((jogador->lvlAtual+1) * 20) - jogador->pontos;
                 xp < 0 ? printf("PASSOU DE FASE!") : printf("Próxima fase em: %d pontos", (xp < 0 ? 0 : xp));
-
+                
                 colorir(COR_BRANCO);
 
               // Caso o jogador não acertar
