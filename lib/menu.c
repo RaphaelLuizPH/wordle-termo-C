@@ -41,10 +41,10 @@ void displayMenu(jogador_t *jogador, bool *estado) {
         break;
 
         case '2':
-        /*    FILE *stats = fopen("stats.txt", "r");
-        if (stats == NULL) {
-            printf("Erro na abertura do arquivo stats.txt\n");
-        }*/
+        //Função para mostrar as estatísticas do jogador
+            atualizarEstatisticas(jogador); // Atualiza o arquivo de estatisticas.dat
+            mostrarEstatisticas(jogador); //Mostra as estatistics de estatisticas.dat
+
 
 
         case '3':
