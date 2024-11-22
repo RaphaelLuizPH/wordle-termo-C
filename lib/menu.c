@@ -136,7 +136,7 @@ void atualizarEstatisticas(jogador_t *jogador){
     FILE *arq1;
     char texto[256];
 
-    arq1 = fopen("estatisticas.dat", "wb"); //Abrir o arquivo estatisticas e escrever em binário
+    arq1 = fopen("estatisticas.dat", "ab"); //Abrir o arquivo estatisticas e concatenar em binário
     if (arq1 == NULL){
         printf("Erro na abertura do arquivo");
         return;
