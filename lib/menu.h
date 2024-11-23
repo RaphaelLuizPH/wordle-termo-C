@@ -14,16 +14,18 @@ typedef struct Jogador {
     char name[50];
     int pontos;
     int lvlAtual;
+    bool estado;
     modo_t modo;
+    FILE *stats;
 } jogador_t;
 
 
 
 
-void displayMenu(jogador_t *jogador, bool *estado);
+void displayMenu(jogador_t *jogador);
 
 
-bool continuarJogo(bool *estado, jogador_t *jogador);
+bool continuarJogo(jogador_t *jogador);
 
 
 void mostrarEstatisticas(jogador_t *jogador);

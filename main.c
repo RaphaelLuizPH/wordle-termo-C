@@ -14,18 +14,30 @@ const int MAX_PALAVRAS = 301; // Definição de uma constante para o número má
         SetConsoleOutputCP(CP_UTF8); //Configuração de codificação de carateres do console de saída
         setlocale(LC_ALL, ".UTF8"); //função da biblioteca para a configuração de localidade do programa
 
-        // Variáveis de controle do estado do jogo
-        bool estadoJogo = true; // Flag para verificar se o jogo está ativo ou não
-        bool *state = &estadoJogo; //Ponteiro para acessar e modificar o estado do jogo
+
 
         jogador_t *jogador = malloc(sizeof(jogador_t)); // Aloca memória para o jogador inicializa seus pontos com 0
+
+        char name[50];
+        colorir(COR_ROXO); // Exibe a arte do jogo
+        printf(" _____ ___ ___ __ __ ___ \n");
+        printf(" |_ _| __ | _  \\ \\/ |/ _ \\ \n");
+        printf("  | | | _|| /  |\\/| | (_) |\n");
+        printf("  |_| |___|_|_ \\_| |_|\\___/ \n");
+        colorir(COR_BRANCO);
+        printf("\n\n\nOlá! Bem-vindo ao TERMO. Por favor, digite o nome do jogador: \n");
+        fgets(name, 50, stdin);
+        name[strcspn(name, "\n")] = 0;
+        strcpy(jogador->name, name);
         jogador->pontos = 0; //inicializa o jogo com os pontos do jogador com 0 pontos
         jogador->lvlAtual = 0;
         jogador->modo = LINEAR;
-        displayMenu(jogador, state); //Exibe o menu inicial do jogo
+        jogador->stats = fopen("estatisticas.bin", "ab+");
+        jogador->estado = true; //Ponteiro para acessar e modificar o estado do jogo
 
+        displayMenu(jogador); //Exibe o menu inicial do jogo
 
-
+        // Variáveis de controle do estado do jogo
 
 
 
@@ -38,7 +50,7 @@ const int MAX_PALAVRAS = 301; // Definição de uma constante para o número má
         // Selecionando uma palavra aleatória da lista
 
         // Inicia o loop principal do jogo
-        while(estadoJogo) {
+        while(jogador->estado) {
 
             char **listaPalavras = calloc(MAX_PALAVRAS, sizeof(char*)); // Aloca memória para a lista de palavras e para uma palavra temporária
             char *palavra = malloc(10 * sizeof(char)); // Palavras têm até 5 caracteres (6 para o terminador '\0')
@@ -198,14 +210,15 @@ const int MAX_PALAVRAS = 301; // Definição de uma constante para o número má
 
                 case 5:
                 jogador->lvlAtual = 0;
-                printf("PARABÉNS! VOCÊ CHEGOU AO FIM DO JOGO!");
-                    Mostracreditos();
+                printf("PARABÉNS! VOCÊ CHEGOU AO FIM DO JOGO!\n\n");
+                mostrarEstatisticas(jogador);
+                getTecladoJogador();
+                Mostracreditos();
+                continuarJogo(jogador);
 
-                    continuarJogo(state, jogador);
 
 
-
-                    break;
+                break;
 
 
 
@@ -225,7 +238,9 @@ const int MAX_PALAVRAS = 301; // Definição de uma constante para o número má
             printf("  | | | _|| /  |\\/| | (_) |\n");
             printf("  |_| |___|_|_ \\_| |_|\\___/ \n");
             colorir(COR_BRANCO);
+            colorir(COR_AZUL);
             printf("\n\n\n");
+            printf("JOGADOR: %s\n", jogador->name);
             colorir(COR_AMARELO);
             printf("LEVEL ATUAL: %d\n", jogador->lvlAtual + 1);
             colorir(COR_VERDE_CLARO);
@@ -302,7 +317,7 @@ const int MAX_PALAVRAS = 301; // Definição de uma constante para o número má
 
 
             // Função que verifica se o jogador deseja continuar jogo
-            if(!continuarJogo(&estadoJogo, jogador)) {
+            if(!continuarJogo(jogador)) {
                 free(listaPalavras); // Libera a memória alocada para a lista de palavras
                 free(palavra); // Libera a memória alocada para a palavra temporária
                 free(jogador); // Libera a memória alocada para o jogador
@@ -325,19 +340,9 @@ const int MAX_PALAVRAS = 301; // Definição de uma constante para o número má
     colorir(COR_VERMELHO);
     printf("Saindo...");
     Sleep(3000);
-
+    fclose(jogador->stats);
     return 0; //o retorno 0 serve para indicar que o programa terminou sem erros
 
 }
 
-/*
-Agradecimentos:
-- Erica Jaislane Campos Fernandes: Ajudou na implementação da lógica de verificação das palavras.
-- Gabriel Rodrigues Alves: Contribuiu com melhorias na estrutura e desempenho do código.
-- Lucas Ataide Martins: Auxiliou na revisão do código e no desenvolvimento de funções auxiliares.
-- Nicole Reinaldo de Carvalho: Responsável pelos testes de funcionalidade e correção de erros.
-- Raphael Luiz de Sousa: Criou a ideia inicial e a estrutura geral do jogo.
-
-Agradecemos a colaboração de todos os envolvidos no projeto!
-*/
 

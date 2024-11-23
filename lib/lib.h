@@ -17,7 +17,7 @@
 #include "cores.h"
 #include "menu.h"
 #include "creditos.h"
-#include "estatisticas.h"
+
 
 
 

@@ -7,7 +7,7 @@
 
 
 
-void displayMenu(jogador_t *jogador, bool *estado) {
+void displayMenu(jogador_t *jogador) {
     printf("\n\n\n");
 
     colorir(COR_ROXO);
@@ -27,6 +27,25 @@ void displayMenu(jogador_t *jogador, bool *estado) {
 
     printf(" 4. SAIR\n");
 
+    printf(" \n\n\n");
+    colorir(COR_VERDE);
+    printf("========= REGRAS DO JOGO TERMO/WORDLE =========\n");
+    colorir(COR_BRANCO);
+    printf("1. Objetivo do Jogo: Adivinhe a palavra secreta em até 6 tentativas.\n");
+    printf("2. Feedback de Palpite:\n");
+    colorir(COR_VERDE);
+    printf("   - Letra correta na posição correta: A letra é mostrada em verde.\n");
+    colorir(COR_AMARELO);
+    printf("   - Letra correta na posição errada: A letra é mostrada em amarelo.\n");
+    colorir(COR_VERMELHO);
+    printf("   - Letra incorreta: A letra é mostrada em vermelho.\n");
+    colorir(COR_BRANCO);
+    printf("3. Número de Tentativas: Você tem 6 tentativas para adivinhar a palavra secreta.\n");
+    colorir(COR_VERDE);
+    printf("===============================================\n");
+    colorir(COR_BRANCO);
+    printf(" \n\n\n");
+
     switch(getTecladoJogador()) {
         case '1':
             system("cls");
@@ -42,9 +61,10 @@ void displayMenu(jogador_t *jogador, bool *estado) {
 
         case '2':
         //Função para mostrar as estatísticas do jogador
-            atualizarEstatisticas(jogador); // Atualiza o arquivo de estatisticas.dat
-            mostrarEstatisticas(jogador); //Mostra as estatistics de estatisticas.dat
 
+            mostrarEstatisticas(jogador); //Mostra as estatistics de estatisticas.bin
+
+            break;
 
 
         case '3':
@@ -55,26 +75,34 @@ void displayMenu(jogador_t *jogador, bool *estado) {
         case '4':
         system("cls");
         fflush(stdout);
-        if(!continuarJogo(estado, jogador)) {
-            Sleep(1000);
-            *estado = false;
-
-        } else {
-            displayMenu(jogador, estado);
+        if(!continuarJogo(&*jogador)) {
+            jogador->estado = false;
+            break;
         }
+            displayMenu(jogador);
+
 
         break;
 
 
         default:
-            displayMenu(jogador, estado);
+            system("cls");
+            displayMenu(jogador);
+        break;
     }
+
+
+
+
+
+
+
 
 
 };
 
 
-bool continuarJogo(bool *estado, jogador_t *jogador) {
+bool continuarJogo(jogador_t *jogador) {
     char c;
 
     fflush(stdin);
@@ -100,10 +128,11 @@ bool continuarJogo(bool *estado, jogador_t *jogador) {
 
     if(c == 'M' || c == 'm') {
         system("cls");
-        displayMenu(jogador, estado);
+        displayMenu(jogador);
         atualizarEstatisticas(jogador); // Atualiza as estatisticas do jogador quando voltar ao menu
         return true;
     }
+
     system("cls");
     return true;
 }
@@ -111,41 +140,34 @@ bool continuarJogo(bool *estado, jogador_t *jogador) {
 
 
 void mostrarEstatisticas(jogador_t *jogador){
-    FILE *arq1;
     char texto[256];
+    system("cls");
 
-    arq1 = fopen("estatisticas.dat", "rb");
-
-    if (arq1 == NULL){
+    if (jogador->stats == NULL){
         printf("Erro na abertura do arquivo");
-        return;
     }
 
-    fseek(arq1, 0, SEEK_SET);  // Move para o in�cio do arquivo antes de ler
-    size_t bytesLidos = fread(texto, sizeof(char), sizeof(texto) - 1, arq1);
-    if (bytesLidos > 0) {
-        texto[bytesLidos] = '\0'; // Garantir que o texto esteja sempre null-terminated
+    fseek(jogador->stats, 0, SEEK_SET);  // Move para o in�cio do arquivo antes de ler
+    size_t bytesLidos;
+    while((bytesLidos = fread(texto, 1, sizeof(texto) - 1, jogador->stats)) > 0) {
+        texto[sizeof(texto) - 1] = '\0';
         printf("%s", texto);
     }
 
 
-    fclose(arq1);
+
+    continuarJogo(jogador);
 
 }
 
 void atualizarEstatisticas(jogador_t *jogador){
-    FILE *arq1;
     char texto[256];
 
-    arq1 = fopen("estatisticas.dat", "ab"); //Abrir o arquivo estatisticas e concatenar em binário
-    if (arq1 == NULL){
-        printf("Erro na abertura do arquivo");
-        return;
-    }
-    sprintf(texto, "\n--- Estatísticas do Jogo ---\nJogador: %s\nPontos %d\nLevel record: %hd\n\n",
-            jogador->name, jogador->pontos, jogador->lvlAtual);
 
-    fwrite(texto, sizeof(char), strlen(texto), arq1);
+    sprintf(texto, "\n--- Estatísticas do Jogo ---\nJogador: %s\nPontos %d\nLevel: %d\n\n",
+            jogador->name, jogador->pontos, jogador->lvlAtual+1);
 
-    fclose(arq1);
+    fwrite(texto, sizeof(char), strlen(texto), jogador->stats);
+
+    fflush(jogador->stats);
 }
