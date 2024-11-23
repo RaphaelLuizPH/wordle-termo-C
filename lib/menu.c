@@ -101,6 +101,7 @@ bool continuarJogo(bool *estado, jogador_t *jogador) {
     if(c == 'M' || c == 'm') {
         system("cls");
         displayMenu(jogador, estado);
+        atualizarEstatisticas(jogador); // Atualiza as estatisticas do jogador quando voltar ao menu
         return true;
     }
     system("cls");
