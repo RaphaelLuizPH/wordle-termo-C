@@ -15,8 +15,7 @@ typedef struct Jogador {
     int pontos;
     int lvlAtual;
     bool estado;
-    modo_t modo;
-    FILE *stats;
+    modo_t modo;    
 } jogador_t;
 
 
