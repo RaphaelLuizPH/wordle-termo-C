@@ -129,7 +129,7 @@ bool continuarJogo(jogador_t *jogador) {
     if(c == 'M' || c == 'm') {
         system("cls");
         displayMenu(jogador);
-        atualizarEstatisticas(jogador); // Atualiza as estatisticas do jogador quando voltar ao menu
+        atualizarEstatisticas(&*jogador); // Atualiza as estatisticas do jogador quando voltar ao menu
         return true;
     }
 
