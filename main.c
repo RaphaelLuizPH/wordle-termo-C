@@ -31,8 +31,7 @@ const int MAX_PALAVRAS = 301; // Definição de uma constante para o número má
         strcpy(jogador->name, name);
         jogador->pontos = 0; //inicializa o jogo com os pontos do jogador com 0 pontos
         jogador->lvlAtual = 0;
-        jogador->modo = LINEAR;
-        jogador->stats = fopen("estatisticas.bin", "ab+");
+        jogador->modo = LINEAR;        
         jogador->estado = true; //Ponteiro para acessar e modificar o estado do jogo
 
         displayMenu(jogador); //Exibe o menu inicial do jogo
@@ -340,7 +339,7 @@ const int MAX_PALAVRAS = 301; // Definição de uma constante para o número má
     colorir(COR_VERMELHO);
     printf("Saindo...");
     Sleep(3000);
-    fclose(jogador->stats);
+    
     return 0; //o retorno 0 serve para indicar que o programa terminou sem erros
 
 }
