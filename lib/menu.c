@@ -140,34 +140,50 @@ bool continuarJogo(jogador_t *jogador) {
 
 
 void mostrarEstatisticas(jogador_t *jogador){
-    char texto[256];
+    char texto[256];    
+    FILE *arq;
+    jogador_t dados_binario;
     system("cls");
 
-    if (jogador->stats == NULL){
-        printf("Erro na abertura do arquivo");
+    arq = fopen("cmake-build-debug/estatisticas.bin", "rb");
+
+    if (arq == NULL){
+        printf("Erro na abertura do arquivo\n");
+        return;
     }
 
-    fseek(jogador->stats, 0, SEEK_SET);  // Move para o in�cio do arquivo antes de ler
-    size_t bytesLidos;
-    while((bytesLidos = fread(texto, 1, sizeof(texto) - 1, jogador->stats)) > 0) {
-        texto[sizeof(texto) - 1] = '\0';
-        printf("%s", texto);
+   // Lê os dados binários do arquivo
+    while (fread(&dados_binario, sizeof(jogador_t), 1, arq) == 1) {
+        printf("\n--- Estatísticas do Jogo ---\n");
+        printf("Jogador: %s\n", dados_binario.name);
+        printf("Pontos: %d\n", dados_binario.pontos);
+        printf("Level: %d\n\n", dados_binario.lvlAtual + 1);
     }
 
-
-
+    fclose(arq);
     continuarJogo(jogador);
-
 }
 
 void atualizarEstatisticas(jogador_t *jogador){
     char texto[256];
+    FILE *arq;
+
+    arq = fopen("cmake-build-debug/estatisticas.bin", "ab");
+
+    if (arq == NULL){
+        printf("Erro na abertura do arquivo\n");
+        return;
+    }
 
 
-    sprintf(texto, "\n--- Estatísticas do Jogo ---\nJogador: %s\nPontos %d\nLevel: %d\n\n",
-            jogador->name, jogador->pontos, jogador->lvlAtual+1);
+    // Primeiro o fwrite é executado e o if verifica se não deu algum erro
+    if(fwrite(jogador, sizeof(jogador_t), 1, arq) != 1) { //Caso o fwrite seja bem sucedido ele retornará 1, caso não ele mostrará essa mensagem de erro, fechará o arquivo e sairá da função.
+        printf("Erro ao escrever no arquivo\n");
+        fclose(arq);
+        return;
+    }
 
-    fwrite(texto, sizeof(char), strlen(texto), jogador->stats);
+    fclose(arq); 
+    
 
-    fflush(jogador->stats);
 }
