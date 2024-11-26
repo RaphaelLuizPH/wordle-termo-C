@@ -129,7 +129,7 @@ bool continuarJogo(jogador_t *jogador) {
     if(c == 'M' || c == 'm') {
         system("cls");
         displayMenu(jogador);
-        atualizarEstatisticas(&*jogador); // Atualiza as estatisticas do jogador quando voltar ao menu
+        atualizarEstatisticas(jogador);
         return true;
     }
 
@@ -142,6 +142,10 @@ bool continuarJogo(jogador_t *jogador) {
 void mostrarEstatisticas(jogador_t *jogador){
     char texto[256];
     system("cls");
+     // Atualiza as estatisticas do jogador quando voltar ao menu
+    fclose(jogador->stats);
+
+    jogador->stats = fopen("estatisticas.bin", "ab+");
 
     if (jogador->stats == NULL){
         printf("Erro na abertura do arquivo");
@@ -162,6 +166,7 @@ void mostrarEstatisticas(jogador_t *jogador){
 
 void atualizarEstatisticas(jogador_t *jogador){
     char texto[256];
+
 
 
     sprintf(texto, "\n--- Estatísticas do Jogo ---\nJogador: %s\nPontos %d\nLevel: %d\n\n",

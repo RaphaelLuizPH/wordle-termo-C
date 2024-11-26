@@ -40,7 +40,7 @@ const int MAX_PALAVRAS = 301; // Definição de uma constante para o número má
         // Variáveis de controle do estado do jogo
 
 
-
+        system("cls");
 
 
         srand(time(NULL)); // Inicializa o gerador de números aleatórios com a semente baseada no tempo atual
