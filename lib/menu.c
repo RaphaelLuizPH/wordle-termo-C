@@ -141,8 +141,7 @@ bool continuarJogo(jogador_t *jogador) {
 
 void mostrarEstatisticas(jogador_t *jogador){
     char texto[256];    
-    FILE *arq;
-    jogador_t dados_binario;
+    FILE *arq;    
     system("cls");
 
     arq = fopen("cmake-build-debug/estatisticas.bin", "rb");
@@ -152,13 +151,9 @@ void mostrarEstatisticas(jogador_t *jogador){
         return;
     }
 
-   // Lê os dados binários do arquivo
-    while (fread(&dados_binario, sizeof(jogador_t), 1, arq) == 1) {
-        printf("\n--- Estatísticas do Jogo ---\n");
-        printf("Jogador: %s\n", dados_binario.name);
-        printf("Pontos: %d\n", dados_binario.pontos);
-        printf("Level: %d\n\n", dados_binario.lvlAtual + 1);
-    }
+    fread(texto, sizof(char), sizof(arq), arq);
+
+        printf("%s", texto);
 
     fclose(arq);
     continuarJogo(jogador);
@@ -168,22 +163,25 @@ void atualizarEstatisticas(jogador_t *jogador){
     char texto[256];
     FILE *arq;
 
-    arq = fopen("cmake-build-debug/estatisticas.bin", "ab");
+    arq = fopen("cmake-build-debug/estatisticas.bin", "a");
 
     if (arq == NULL){
         printf("Erro na abertura do arquivo\n");
         return;
     }
 
+    //Usa o snprintf para limitar o tamanho do vetor texto para não ultrapassar 
+     snprintf(texto,sizeof(texto), "\n--- Estatísticas do Jogo ---\nJogador: %s\nPontos %d\nLevel: %d\n\n",
+            jogador->name, jogador->pontos, jogador->lvlAtual+1);
 
-    // Primeiro o fwrite é executado e o if verifica se não deu algum erro
-    if(fwrite(jogador, sizeof(jogador_t), 1, arq) != 1) { //Caso o fwrite seja bem sucedido ele retornará 1, caso não ele mostrará essa mensagem de erro, fechará o arquivo e sairá da função.
-        printf("Erro ao escrever no arquivo\n");
-        fclose(arq);
-        return;
-    }
-
-    fclose(arq); 
+    // escreve o texto no arquivo
+    // size_t mostra o tamanho digitado em bytes 
+    size_t bytesEscritos = fwrite(texto, sizeof(char), strlen(texto), arq); // Usa-se o strlen texto para escrever de acordo com o tamanho de caracteres do vetor texto.
     
-
+    // verifica se o texto escrito no arquivo é diferente do vetor texto
+        if (bytesEscritos != strlen(texto)){ // Os bytesEscritos serão apenas a quantidade de bytes dos caracteres do vetor texto, não se compara com o sizeof(texto), pois este mostrará o tamanho em bytes totais do buffer
+            printf("Erro na escrita do arquivo!!!\n");
+        }
+    
+    fclose(arq); 
 }
